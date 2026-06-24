@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "qrangge.uniquewardens.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "SculkShriekerMixin",
+    "WardenMixin",
+    "FlintAndSteelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
