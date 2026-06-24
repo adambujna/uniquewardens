@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.SpawnUtil;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import qrangge.uniquewardens.accessor.WardenAccessor;
 import qrangge.uniquewardens.services.Services;
 
@@ -45,7 +45,7 @@ public class RitualWardenSpawn {
     private static void executeSpawn(ServerLevel level, BlockPos pos, BlockPos cityCenter) {
         level.playSound(null, pos, SoundEvents.WARDEN_EMERGE, SoundSource.HOSTILE, 2.0f, 1.0f);
         level.playSound(null, pos, SoundEvents.WARDEN_ROAR, SoundSource.HOSTILE, 2.0f, 1.0f);
-        SpawnUtil.trySpawnMob(EntityType.WARDEN, EntitySpawnReason.TRIGGERED, level, pos,
+        SpawnUtil.trySpawnMob(EntityTypes.WARDEN, EntitySpawnReason.TRIGGERED, level, pos,
                         5, 5, 2, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER, false)
                 .ifPresent(warden -> {
                     ((WardenAccessor) warden).uniquewardens$setHomeCity(cityCenter);

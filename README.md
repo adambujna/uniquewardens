@@ -6,7 +6,7 @@
 
 <h1 align="center">Unique Wardens Mod</h1>
 
-![Minecraft](https://img.shields.io/badge/Minecraft-26.1.x-3DCBE8)
+![Minecraft](https://img.shields.io/badge/Minecraft-26.2.x-3DCBE8)
 ![Loaders](https://img.shields.io/badge/Loaders-Fabric%20%7C%20NeoForge-6b6b35)
 ![License](https://img.shields.io/badge/License-CC0--1.0-lightgrey)
 
@@ -28,7 +28,7 @@ without searching for a new Ancient city each time.
 
 ## How to re-summon the Warden
 
-> *Note: Only works inside an Ancient city whose warden has already been killed. If the Warden is still alive, 
+> *Note: Only works inside an Ancient city whose warden has already been killed. If the Warden is still alive,
 > or hasn't spawned yet, you have to deal with it normally first.*
 
 If you wish to fight the Warden of an Ancient city again after defeating it once,
@@ -46,11 +46,11 @@ shriek again, and if the Warden buries itself, it will remain active and can be 
 </p>
 
 **How to spawn the Warden:**
-1. Inside an Ancient city, place a Redstone block, then surround it with Soul sand on all four sides, making a small 
+1. Inside an Ancient city, place a Redstone block, then surround it with Soul sand on all four sides, making a small
    cross.
 2. Place a candle on top of each Soul sand block.
 3. Light all four candles with flint and steel.
-4. If you have successfully initiated the spawn, once the last candle is lit, the candles will turn to soul fire. 
+4. If you have successfully initiated the spawn, once the last candle is lit, the candles will turn to soul fire.
    Wait about 10 seconds for the Warden to emerge.
 
 Breaking/modifying any part of the structure before the spawn finishes will cancel the ritual.
@@ -58,11 +58,11 @@ Breaking/modifying any part of the structure before the spawn finishes will canc
 ## Compatible with
 
 This mod is compatible with:
-- Minecraft 26.1.x
+- Minecraft 26.2.x
 - Fabric (requires [Fabric API](https://modrinth.com/mod/fabric-api))
 - NeoForge
 
-> Acknowledgement to the authors of the [Multi-Loader Template](https://github.com/jaredlll08/MultiLoader-Template) 
+> Acknowledgement to the authors of the [Multi-Loader Template](https://github.com/jaredlll08/MultiLoader-Template)
 which this mod uses.
 
 ## Installation
