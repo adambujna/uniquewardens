@@ -8,7 +8,10 @@ public class FabricDataHelper implements IDataHelper {
     @SuppressWarnings("resource")
     private FabricUniqueWardensData getData(ServerLevel level) {
         return level.getServer().overworld().getDataStorage()
-                .computeIfAbsent(FabricUniqueWardensData.TYPE);
+                .computeIfAbsent(
+                        FabricUniqueWardensData.FACTORY,
+                        FabricUniqueWardensData.ID
+                );
     }
 
     @Override

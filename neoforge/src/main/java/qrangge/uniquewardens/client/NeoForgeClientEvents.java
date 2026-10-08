@@ -8,7 +8,7 @@ import qrangge.uniquewardens.Constants;
 import qrangge.uniquewardens.client.particle.RitualFlameParticle;
 import qrangge.uniquewardens.registry.ModParticles;
 
-@EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class NeoForgeClientEvents {
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {

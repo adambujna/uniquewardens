@@ -8,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.SpawnUtil;
-import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.level.ChunkPos;
@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import qrangge.uniquewardens.Constants;
 import qrangge.uniquewardens.accessor.WardenAccessor;
 import qrangge.uniquewardens.services.Services;
 import qrangge.uniquewardens.services.helpers.IDataHelper;
@@ -71,15 +72,18 @@ public class SculkShriekerMixin {
     // If Shrieker spawns Warden, tag it with its home city
     @WrapOperation(
             method = "trySummonWarden",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/SpawnUtil;trySpawnMob(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;IIILnet/minecraft/util/SpawnUtil$Strategy;Z)Ljava/util/Optional;")
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/util/SpawnUtil;trySpawnMob(Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;IIILnet/minecraft/util/SpawnUtil$Strategy;)Ljava/util/Optional;")
     )
-    private Optional<Warden> captureWarden(EntityType<Warden> entityType, EntitySpawnReason spawnReason, ServerLevel level, BlockPos start, int spawnAttempts, int spawnRangeXZ, int spawnRangeY, SpawnUtil.Strategy strategy, boolean checkCollisions, Operation<Optional<Warden>> original) {
-        // Execute original spawn logic
-        Optional<Warden> result = original.call(entityType, spawnReason, level, start, spawnAttempts, spawnRangeXZ, spawnRangeY, strategy, checkCollisions);
+    private Optional<Warden> captureWarden(EntityType<Warden> entityType, MobSpawnType spawnType,
+                                           ServerLevel level, BlockPos start, int spawnAttempts, int spawnRangeXZ, int spawnRangeY,
+                                           SpawnUtil.Strategy strategy, Operation<Optional<Warden>> original) {
+        Optional<Warden> result = original.call(entityType, spawnType, level, start,
+                spawnAttempts, spawnRangeXZ, spawnRangeY, strategy);
 
         // Extract the Warden if the spawn was successful
         result.ifPresent(warden -> {
-            System.out.println("A Shrieker at " + start + " just summoned: " + warden);
+            Constants.LOG.info("A Shrieker at {} just summoned: {}", start, warden);
 
             BlockPos cityCenter = uniquewardens$getOrCacheCityCenter(level);
             if (cityCenter != null) {
@@ -138,7 +142,7 @@ public class SculkShriekerMixin {
         ChunkPos origin = new ChunkPos(nearestPos.getX() >> 4, nearestPos.getZ() >> 4);
         for (int dx = -2; dx <= 2; dx++) {
             for (int dz = -2; dz <= 2; dz++) {
-                LevelChunk chunk = level.getChunkSource().getChunkNow(origin.x() + dx, origin.z() + dz);
+                LevelChunk chunk = level.getChunkSource().getChunkNow(origin.x + dx, origin.z + dz);
                 if (chunk == null) continue;
                 StructureStart cityStart = chunk.getAllStarts().get(structure);
                 if (cityStart != null && cityStart.isValid()) {

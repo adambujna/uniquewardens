@@ -8,7 +8,10 @@ public class NeoForgeDataHelper implements IDataHelper {
     @SuppressWarnings("resource")
     private NeoForgeUniqueWardensData getData(ServerLevel level) {
         return level.getServer().overworld().getDataStorage()
-                .computeIfAbsent(NeoForgeUniqueWardensData.TYPE);
+                .computeIfAbsent(
+                        NeoForgeUniqueWardensData.FACTORY,
+                        NeoForgeUniqueWardensData.ID
+                        );
     }
 
     @Override

@@ -6,7 +6,7 @@
 
 <h1 align="center">Unique Wardens Mod</h1>
 
-![Minecraft](https://img.shields.io/badge/Minecraft-26.1.x-3DCBE8)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-3DCBE8)
 ![Loaders](https://img.shields.io/badge/Loaders-Fabric%20%7C%20NeoForge-6b6b35)
 ![License](https://img.shields.io/badge/License-CC0--1.0-lightgrey)
 
@@ -58,7 +58,7 @@ Breaking/modifying any part of the structure before the spawn finishes will canc
 ## Compatible with
 
 This mod is compatible with:
-- Minecraft 26.1.x
+- Minecraft 1.21.1
 - Fabric (requires [Fabric API](https://modrinth.com/mod/fabric-api))
 - NeoForge
 

@@ -1,46 +1,49 @@
 package qrangge.uniquewardens.uniquewardens;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import net.minecraft.resources.Identifier;
-import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.saveddata.SavedDataType;
-import qrangge.uniquewardens.Constants;
-
 
 public class NeoForgeUniqueWardensData extends SavedData {
+    public static final String ID = "uniquewardens";
+
     // Saves central coordinates of cleared cities from level.structureManager().getStructureAt(pos, Structure)
     private final LongOpenHashSet clearedCities;    // Cities where Warden was defeated
     private final LongOpenHashSet activeWardens;    // Cities where Warden currently spawned
 
-    // Constructor Codec uses for immutability
+    public NeoForgeUniqueWardensData() {
+        this(new LongOpenHashSet(), new LongOpenHashSet());
+    }
+
     public NeoForgeUniqueWardensData(LongOpenHashSet clearedCities, LongOpenHashSet activeWardens) {
         this.clearedCities = clearedCities;
         this.activeWardens = activeWardens;
     }
 
-    // Codec and data type for saving/loading
-    public static final Codec<NeoForgeUniqueWardensData> CODEC = RecordCodecBuilder.create(
-            instance -> instance.group(
-                    Codec.LONG_STREAM.xmap(
-                            s -> { LongOpenHashSet set = new LongOpenHashSet(); s.forEach(set::add); return set; },
-                            LongOpenHashSet::longStream
-                    ).fieldOf("ClearedCities").forGetter(d -> d.clearedCities),
-                    Codec.LONG_STREAM.xmap(
-                            s -> { LongOpenHashSet set = new LongOpenHashSet(); s.forEach(set::add); return set; },
-                            LongOpenHashSet::longStream
-                    ).fieldOf("ActiveWardens").forGetter(d -> d.activeWardens)
-            ).apply(instance, NeoForgeUniqueWardensData::new)
-    );
+    // Replaces SavedDataType TYPE: pass to DimensionDataStorage#computeIfAbsent(FACTORY, ID)
+    public static final SavedData.Factory<NeoForgeUniqueWardensData> FACTORY =
+            new SavedData.Factory<>(NeoForgeUniqueWardensData::new, NeoForgeUniqueWardensData::load, null);
 
-    public static final SavedDataType<NeoForgeUniqueWardensData> TYPE = new SavedDataType<NeoForgeUniqueWardensData>(
-            Identifier.fromNamespaceAndPath(Constants.MOD_ID, "uniquewardens"),
-            () -> new NeoForgeUniqueWardensData(new LongOpenHashSet(), new LongOpenHashSet()),
-            CODEC,
-            DataFixTypes.LEVEL
-    );
+    public static NeoForgeUniqueWardensData load(CompoundTag tag, HolderLookup.Provider registries) {
+        return new NeoForgeUniqueWardensData(
+                readSet(tag, "ClearedCities"),
+                readSet(tag, "ActiveWardens"));
+    }
+
+    @Override
+    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
+        tag.putLongArray("ClearedCities", clearedCities.toLongArray());
+        tag.putLongArray("ActiveWardens", activeWardens.toLongArray());
+        return tag;
+    }
+
+    private static LongOpenHashSet readSet(CompoundTag tag, String key) {
+        return tag.contains(key, Tag.TAG_LONG_ARRAY)
+                ? new LongOpenHashSet(tag.getLongArray(key))
+                : new LongOpenHashSet();
+    }
 
     // Check if city's Warden was killed
     public boolean isCleared(long pos) {
